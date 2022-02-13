@@ -14,6 +14,7 @@ contract PlatziPunks is ERC721, ERC721Enumerable, PlatziPunksDNA {
     Counters.Counter private _idCounter;
     uint256 public maxSupply;
     address payable collectionAuthor;
+    mapping(uint256 => uint256) public tokenDNA;
 
     constructor(uint256 _maxSupply) ERC721("PlatziPunks", "PLPKS") {
         maxSupply = _maxSupply;
@@ -26,6 +27,8 @@ contract PlatziPunks is ERC721, ERC721Enumerable, PlatziPunksDNA {
         require(msg.value == uint(10), "Please add funds to pay the minting fee");
         _safeMint(msg.sender, current);
         collectionAuthor.transfer(msg.value);
+        // calculate DNA for new minted token
+        tokenDNA[current] = deterministicPseudoRandomDNA(current, msg.sender);
         _idCounter.increment();
     }
 
