@@ -27,10 +27,10 @@ contract PlatziPunks is ERC721, ERC721Enumerable, PlatziPunksDNA {
         uint256 current = _idCounter.current();
         require(current < maxSupply, "The maximum supply limit has been met");
         //require(msg.value == uint(10), "Please add funds to pay the minting fee");
-        _safeMint(msg.sender, current);
         //collectionAuthor.transfer(msg.value);
         // calculate DNA for new minted token
         tokenDNA[current] = deterministicPseudoRandomDNA(current, msg.sender);
+        _safeMint(msg.sender, current);
         _idCounter.increment();
     }
 
